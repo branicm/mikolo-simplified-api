@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mikolo-simplified-api
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run prisma:migrate && npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mikolo-simplified-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: mikolo-simplified-db
+    plan: free
